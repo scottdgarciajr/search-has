@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import "./nasa-image.js";
+
 export class NasaSearch extends LitElement {
   static get properties() {
     return {
@@ -51,7 +52,6 @@ export class NasaSearch extends LitElement {
         line-height: 24px;
         border: none;
         outline: none;
-        color: #202124;
       }
 
       .search-input::placeholder {

@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 
 export class NasaImage extends LitElement {
 
@@ -34,14 +35,14 @@ export class NasaImage extends LitElement {
       }
 
       .card:hover {
-        color: white;
+        color: var(--ddd-theme-default-slateMaxLight);        ;
         background: url("https://c.tenor.com/bQvEhQcSGmEAAAAC/tenor.gif") no-repeat center center;
         background-size: cover;
         background-attachment: fixed;
       }
       
       .card:hover .secondary {
-        color: lightgrey; /* Change secondary text color on hover */
+        color: --ddd-theme-default-slateMaxLight; /* Change secondary text color on hover */
       }
       
 
