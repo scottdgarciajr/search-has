@@ -94,7 +94,29 @@ export class NasaImage extends LitElement {
   }
 
   openImage() {
-    window.open(this.source, '_blank');
+    // Create a new image element for the GIF
+  const gif = document.createElement('img');
+  gif.src = "https://media1.tenor.com/m/LH6VcfpgfaAAAAAd/warp-space.gif";
+  gif.alt = "a black background with white lines that looks like a star burst";
+
+  
+  gif.style.position = 'fixed'; 
+  gif.style.top = '0'; 
+  gif.style.left = '0'; 
+  gif.style.width = '100vw'; 
+  gif.style.height = '100vh'; 
+  gif.style.objectFit = 'cover'; 
+  gif.style.zIndex = '9999'; 
+  document.body.appendChild(gif); 
+
+  // Delay for 0.5 seconds
+  setTimeout(() => {
+    // Remove the GIF after displaying
+    document.body.removeChild(gif);
+    // Open the image
+    window.open(this.source, '_blank'); 
+  }, 500);
+    
   }
 
   onKeyup(e) {

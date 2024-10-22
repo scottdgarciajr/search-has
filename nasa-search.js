@@ -108,7 +108,7 @@ export class NasaSearch extends LitElement {
     return html`
       <h2>${this.title}</h2>
       <details open>
-        <summary>Search inputs</summary>
+        <summary>Search the Stars</summary>
         <div class="search-container">
           <div class="search-icon">
             <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px">
