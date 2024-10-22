@@ -34,8 +34,16 @@ export class NasaImage extends LitElement {
       }
 
       .card:hover {
-        background-color: #f0f0f0;
+        color: white;
+        background: url("https://c.tenor.com/bQvEhQcSGmEAAAAC/tenor.gif") no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed;
       }
+      
+      .card:hover .secondary {
+        color: lightgrey; /* Change secondary text color on hover */
+      }
+      
 
       .card:focus {
         outline: none;

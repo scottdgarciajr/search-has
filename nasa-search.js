@@ -128,6 +128,8 @@ export class NasaSearch extends LitElement {
           <nasa-image
             source="${item.links[0].href}"
             title="${item.data[0].title}"
+            alt="${item.data[0].description}"
+            secondary_creator="${item.data[0].secondary_creator}"
           ></nasa-image>
         `)}
       </div>
