@@ -1,12 +1,12 @@
 import { LitElement, html, css } from 'lit';
-import "./nasa-image.js";
+import "./hax-card.js";
 
-export class NasaSearch extends LitElement {
+export class HaxSearch extends LitElement {
   static get properties() {
     return {
       title: { type: String },
       loading: { type: Boolean, reflect: true },
-      items: { type: Array, },
+      items: { type: Array },
       value: { type: String },
     };
   }
@@ -16,7 +16,7 @@ export class NasaSearch extends LitElement {
       :host {
         display: block;
       }
-      
+
       .search-container {
         display: flex;
         justify-content: center;
@@ -73,7 +73,7 @@ export class NasaSearch extends LitElement {
       details {
         margin: 16px;
         padding: 16px;
-        background: url("https://c.tenor.com/bQvEhQcSGmEAAAAC/tenor.gif") no-repeat center center;
+        background: url("https://media1.tenor.com/m/8u6LQbyDWBAAAAAC/where-searching.gif") no-repeat center center;
         background-size: cover;
         background-attachment: fixed;
         border-radius: 8px;
@@ -95,10 +95,9 @@ export class NasaSearch extends LitElement {
     `;
   }
 
-
   constructor() {
     super();
-    this.value = null;
+    this.value = '';
     this.title = '';
     this.loading = false;
     this.items = [];
@@ -108,7 +107,7 @@ export class NasaSearch extends LitElement {
     return html`
       <h2>${this.title}</h2>
       <details open>
-        <summary>Search the Stars</summary>
+        <summary>Search the HaxWeb!</summary>
         <div class="search-container">
           <div class="search-icon">
             <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px">
@@ -118,20 +117,28 @@ export class NasaSearch extends LitElement {
           <input 
             id="input" 
             class="search-input" 
-            placeholder="Search NASA images" 
+            placeholder="Search HaxWeb content" 
             @input="${this.inputChanged}" 
           />
         </div>
       </details>
       <div class="results">
-        ${this.items.map((item, index) => html`
-          <nasa-image
-            source="${item.links[0].href}"
-            title="${item.data[0].title}"
-            alt="${item.data[0].description}"
-            secondary_creator="${item.data[0].secondary_creator}"
-          ></nasa-image>
-        `)}
+        ${this.items.map((item) => {
+          // Extract necessary fields from JSON item
+          const created = item.metadata ? new Date(parseInt(item.metadata.created) * 1000).toLocaleDateString() : '';
+          const updated = item.metadata ? new Date(parseInt(item.metadata.updated) * 1000).toLocaleDateString() : '';
+          const logo = item.metadata && item.metadata.files && item.metadata.files[0] ? item.metadata.files[0].fullUrl : '';
+
+          return html`
+            <hax-item
+              created="${created}"
+              lastUpdated="${updated}"
+              title="${item.title}"
+              description="${item.description}"
+              logo="${logo}"
+            ></hax-item>
+          `;
+        })}
       </div>
     `;
   }
@@ -139,16 +146,14 @@ export class NasaSearch extends LitElement {
   inputChanged(e) {
     this.value = this.shadowRoot.querySelector('#input').value;
   }
-  // life cycle will run when anything defined in `properties` is modified
+
   updated(changedProperties) {
-    // see if value changes from user input and is not empty
     if (changedProperties.has('value') && this.value) {
       this.updateResults(this.value);
-    }
-    else if (changedProperties.has('value') && !this.value) {
+    } else if (changedProperties.has('value') && !this.value) {
       this.items = [];
     }
-    // @debugging purposes only
+
     if (changedProperties.has('items') && this.items.length > 0) {
       console.log(this.items);
     }
@@ -156,17 +161,33 @@ export class NasaSearch extends LitElement {
 
   updateResults(value) {
     this.loading = true;
-    fetch(`https://images-api.nasa.gov/search?media_type=image&q=${value}`).then(d => d.ok ? d.json(): {}).then(data => {
-      if (data.collection) {
-        this.items = [];
-        this.items = data.collection.items;
+    fetch('https://haxtheweb.org/site.json')
+      .then(response => response.ok ? response.json() : {})
+      .then(data => {
+        if (data && Array.isArray(data.items)) {
+          this.items = data.items.filter(item => 
+            item.title.toLowerCase().includes(value.toLowerCase()) ||
+            item.description.toLowerCase().includes(value.toLowerCase())
+          ).map(item => {
+            // Modify the URL if it starts with a relative path
+            if (item.metadata && item.metadata.files && item.metadata.files[0]) {
+              const fileUrl = item.metadata.files[0].fullUrl;
+              // Assuming the base URL is 'https://haxtheweb.org' if the path starts with '/'
+              item.metadata.files[0].fullUrl = fileUrl.startsWith('/')
+                ? `https://haxtheweb.org${fileUrl}`
+                : fileUrl;
+            }
+            return item;
+          });
+        }
         this.loading = false;
-      }  
-    });
+      });
   }
+  
 
   static get tag() {
-    return 'nasa-search';
+    return 'hax-search';
   }
 }
-customElements.define(NasaSearch.tag, NasaSearch);
+
+customElements.define(HaxSearch.tag, HaxSearch);

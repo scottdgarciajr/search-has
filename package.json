@@ -1,7 +1,7 @@
 {
-    "name": "nasa-search",
+    "name": "hax-search",
     "version": "0.0.0",
-    "description": "Webcomponent nasa-search following hax / open-wc recommendations",
+    "description": "Webcomponent hax-search following hax / open-wc recommendations",
     "license": "Apache-2.0",
     "author": {
         "name": "btopro"
@@ -16,8 +16,8 @@
         "url": ""
     },
     "type": "module",
-    "main": "nasa-search.js",
-    "module": "nasa-search.js",
+    "main": "hax-search.js",
+    "module": "hax-search.js",
     "scripts": {
         "start": "web-dev-server",
         "build": "rimraf public && rollup -c rollup.config.js && npm run analyze",

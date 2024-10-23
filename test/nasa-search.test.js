@@ -1,13 +1,13 @@
 import { html, fixture, expect } from '@open-wc/testing';
-import "../nasa-search.js";
+import "../hax-search.js";
 
-describe("nasaSearch test", () => {
+describe("haxSearch test", () => {
   let element;
   beforeEach(async () => {
     element = await fixture(html`
-      <nasa-search
+      <hax-search
         title="title"
-      ></nasa-search>
+      ></hax-search>
     `);
   });
 

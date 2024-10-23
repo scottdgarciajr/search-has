@@ -11,7 +11,7 @@
         "designTreatment": false
     },
     "gizmo": {
-        "title": "nasa-search",
+        "title": "hax-search",
         "description": "",
         "icon": "icons:android",
         "color": "purple",
@@ -41,7 +41,7 @@
     },
     "demoSchema": [
         {
-            "tag": "nasa-search",
+            "tag": "hax-search",
             "properties": {
               "title": "Sample property title"
             },
