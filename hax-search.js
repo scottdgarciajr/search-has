@@ -127,7 +127,7 @@ export class HaxSearch extends LitElement {
           // Extract necessary fields from JSON item
           const created = item.metadata ? new Date(parseInt(item.metadata.created) * 1000).toLocaleDateString() : '';
           const updated = item.metadata ? new Date(parseInt(item.metadata.updated) * 1000).toLocaleDateString() : '';
-          const logo = item.metadata && item.metadata.files && item.metadata.files[0] ? item.metadata.files[0].fullUrl : '';
+          const logo = item.metadata && item.metadata.files && item.metadata.files[0] ? item.metadata.files[0].url : '';
 
           return html`
             <hax-item
@@ -168,17 +168,7 @@ export class HaxSearch extends LitElement {
           this.items = data.items.filter(item => 
             item.title.toLowerCase().includes(value.toLowerCase()) ||
             item.description.toLowerCase().includes(value.toLowerCase())
-          ).map(item => {
-            // Modify the URL if it starts with a relative path
-            if (item.metadata && item.metadata.files && item.metadata.files[0]) {
-              const fileUrl = item.metadata.files[0].fullUrl;
-              // Assuming the base URL is 'https://haxtheweb.org' if the path starts with '/'
-              item.metadata.files[0].fullUrl = fileUrl.startsWith('/')
-                ? `https://haxtheweb.org${fileUrl}`
-                : fileUrl;
-            }
-            return item;
-          });
+          )
         }
         this.loading = false;
       });

@@ -87,7 +87,7 @@ export class HaxItem extends LitElement {
         @keyup="${this.onKeyup}"
       >
         <div class="image-container">
-          <img src="${this.logo}" alt="${this.title}" />
+          <img src="https://haxtheweb.org/${this.logo}" alt="${this.title}" />
         </div>
         <div class="info">${this.title}</div>
         <div class="secondary">${this.description}</div>
