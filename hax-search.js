@@ -73,7 +73,7 @@ export class HaxSearch extends LitElement {
       details {
         margin: 16px;
         padding: 16px;
-        background: url("https://media1.tenor.com/m/8u6LQbyDWBAAAAAC/where-searching.gif") no-repeat center center;
+        background: url("https://media.tenor.com/qbO5vZpflc4AAAAi/orumcek-spider.gif") no-repeat center center;
         background-size: cover;
         background-attachment: fixed;
         border-radius: 8px;
