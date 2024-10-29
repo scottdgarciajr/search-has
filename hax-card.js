@@ -11,6 +11,7 @@ export class HaxItem extends LitElement {
     this.created = '';
     this.lastUpdated = '';
     this.logo = '';
+    this.slug = 'https://haxtheweb.org';
   }
 
   static get properties() {
@@ -19,62 +20,103 @@ export class HaxItem extends LitElement {
       description: { type: String },
       created: { type: String },
       lastUpdated: { type: String },
-      logo: { type: String }
+      logo: { type: String },
+      slug: { type: String }
     };
   }
 
   static get styles() {
     return css`
+      /* Root Card Styles */
       .card {
-        display: inline-block;
-        width: 240px;
-        height: auto;
-        border-radius: 8px;
-        overflow: hidden;
-        transition: background-color 0.3s ease;
-        cursor: pointer;
-        text-align: center;
-        padding: 10px;
-        background-color: #f9f9f9;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .card:hover {
-        background-color: var(--global-hex-color);
-      }
-
-      .image-container {
-        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
         width: 100%;
-        height: 140px;
+        max-width: 320px;
+        border-radius: 12px;
         overflow: hidden;
+        padding: 16px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        cursor: pointer;
+        outline: none;
+        /* Height for golden ratio (approx. 1.618) */
+        height: 512px;
       }
-
+  
+      /* Hover and Focus Effects */
+      .card:hover, .card:focus {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        background-color: var(--global-hex-color, #e1f5fe);
+      }
+  
+      /* Image Styling */
+      .image-container {
+        width: 100%;
+        aspect-ratio: 1.618; /* Golden ratio for a balanced aspect */
+        overflow: hidden;
+        border-radius: 8px;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+  
       img {
-        width: 240px;
-        height: 140px;
+        width: 100%;
+        height: auto;
         object-fit: cover;
-        border-radius: 4px;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
       }
-
+  
+      .card:hover img {
+        transform: scale(1.05);
+      }
+  
+      /* Typography and Text Styling */
       .info {
-        margin-top: 5px;
-        font-size: 14px;
-        font-weight: bold;
+        margin-top: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        line-height: 1.5;
       }
-
+  
       .secondary {
-        font-size: 12px;
+        font-size: 16px;
         color: #555;
+        margin-top: 6px;
+        line-height: 1.4;
+        text-align: center;
       }
-
+  
       .metadata {
-        font-size: 10px;
+        font-size: 12px;
         color: #777;
-        margin-top: 5px;
+        margin-top: 8px;
+        font-style: italic;
+        line-height: 1.3;
+        text-align: center;
+      }
+  
+      /* Accessibility and Responsive */
+      @media (max-width: 600px) {
+        .card {
+          width: 100%;
+          max-width: 100%;
+          padding: 12px;
+          height: auto; /* Flexible height for smaller screens */
+        }
       }
     `;
   }
+  
 
   render() {
     const createdDate = new Date(parseInt(this.created) * 1000).toLocaleDateString();
@@ -89,7 +131,7 @@ export class HaxItem extends LitElement {
       <div
         class="card"
         tabindex="0"
-        @click="${this.openImage}"
+        @click="${this.openSlug}"
         @keyup="${this.onKeyup}"
       >
         <div class="image-container">
@@ -103,7 +145,7 @@ export class HaxItem extends LitElement {
     `;
   }
 
-  openImage() {
+  openSlug() {
     const gif = document.createElement('img');
     gif.src = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExazA4eXV5cDlhaTJoY2x4dW1tb3VwMTUxNWp4NHZ5bmVmemtwZmlzMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/aUPfvs5MOXpxm/200.gif";
     gif.alt = "a black background with white lines that looks like a star burst";
@@ -119,13 +161,13 @@ export class HaxItem extends LitElement {
 
     setTimeout(() => {
       document.body.removeChild(gif);
-      window.open(this.logo, '_blank'); 
+      window.open(('https://haxtheweb.org/'+this.slug), '_blank'); 
     }, 2000);
   }
 
   onKeyup(e) {
     if (e.key === 'Enter') {
-      this.openImage();
+      this.openSlug();
     }
   }
 

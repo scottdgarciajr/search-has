@@ -137,6 +137,7 @@ export class HaxSearch extends LitElement {
               title="${item.title}"
               description="${item.description}"
               logo="${logo}"
+              slug="${item.slug}"
             ></hax-item>
           `;
         })}
