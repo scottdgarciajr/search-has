@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 
+
 export class HaxItem extends LitElement {
 
   constructor() {
@@ -39,7 +40,7 @@ export class HaxItem extends LitElement {
       }
 
       .card:hover {
-        background-color: #e0e0e0;
+        background-color: var(--global-hex-color);
       }
 
       .image-container {
@@ -78,6 +79,11 @@ export class HaxItem extends LitElement {
   render() {
     const createdDate = new Date(parseInt(this.created) * 1000).toLocaleDateString();
     const updatedDate = new Date(parseInt(this.lastUpdated) * 1000).toLocaleDateString();
+    
+    if (this.logo == '') {
+      this.logo = "/files/HAX.psu%20World%20changer-circle1.png";//This changes the default image for empty strings
+  }
+  
 
     return html`
       <div

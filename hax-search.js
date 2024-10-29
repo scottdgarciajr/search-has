@@ -128,6 +128,7 @@ export class HaxSearch extends LitElement {
           const created = item.metadata ? new Date(parseInt(item.metadata.created) * 1000).toLocaleDateString() : '';
           const updated = item.metadata ? new Date(parseInt(item.metadata.updated) * 1000).toLocaleDateString() : '';
           const logo = item.metadata && item.metadata.files && item.metadata.files[0] ? item.metadata.files[0].url : '';
+          
 
           return html`
             <hax-item
@@ -168,11 +169,33 @@ export class HaxSearch extends LitElement {
           this.items = data.items.filter(item => 
             item.title.toLowerCase().includes(value.toLowerCase()) ||
             item.description.toLowerCase().includes(value.toLowerCase())
-          )
+          );
         }
+
+        // Update global hex color after fetching the JSON data
+        this.updateGlobalHexColor(data);
+
         this.loading = false;
       });
   }
+
+  updateGlobalHexColor(data) {
+    if (data.metadata && data.metadata.theme && data.metadata.theme.variables) {
+        const hexCode = data.metadata.theme.variables.hexCode;
+        console.log('Hex Code:', hexCode);
+
+        // Update the global CSS variable --global-hex-color
+        document.documentElement.style.setProperty('--global-hex-color', hexCode);
+        
+        // Verify the update
+        const computedStyle = getComputedStyle(document.documentElement);
+        console.log('Updated global-hex-color:', computedStyle.getPropertyValue('--global-hex-color'));
+    } else {
+        console.log('Hex Code not found');
+    }
+}
+
+
   
 
   static get tag() {
