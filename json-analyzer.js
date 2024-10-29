@@ -110,10 +110,13 @@ class JsonAnalyzer extends LitElement {
 
   constructor() {
     super();
-    this.url = '';
+    this.url = 'https://haxtheweb.org/site.json';
   }
 
   render() {
+    if (this.url == ''){this.url = 'https://haxtheweb.org/site.json';}
+    else if (!this.url || !this.url.endsWith('site.json')) {this.url+='/site.json'}
+    
     return html`
       <div class="search-container">
         
@@ -121,7 +124,7 @@ class JsonAnalyzer extends LitElement {
         <input
           class="search-input"
           type="text"
-          placeholder="Enter JSON URL"
+          placeholder="https://haxtheweb.org/site.json (Place URL Here To Override)"
           @input="${this._updateUrl}"
         />
       </div>
@@ -140,10 +143,11 @@ class JsonAnalyzer extends LitElement {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const data = await response.json();
-      console.log(data);
+      /*const data = await response.json();
+      console.log(data);*/
     } catch (error) {
       console.error('Error fetching JSON:', error);
+      alert('Error fetching JSON\n', error);
     }
   }
 }
