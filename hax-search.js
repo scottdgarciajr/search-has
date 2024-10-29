@@ -1,13 +1,25 @@
 import { LitElement, html, css } from 'lit';
+import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import "./hax-card.js";
 
 export class HaxSearch extends LitElement {
+  
+  constructor() {
+    super();
+    this.value = '';
+    this.title = '';
+    this.loading = false;
+    this.items = [];
+    this.jsonUrl = 'https://haxtheweb.org/site.json'; // Default URL, can be overridden
+  }
+  
   static get properties() {
     return {
       title: { type: String },
       loading: { type: Boolean, reflect: true },
       items: { type: Array },
       value: { type: String },
+      jsonUrl: { type: String }, // New property for JSON URL
     };
   }
 
@@ -95,13 +107,7 @@ export class HaxSearch extends LitElement {
     `;
   }
 
-  constructor() {
-    super();
-    this.value = '';
-    this.title = '';
-    this.loading = false;
-    this.items = [];
-  }
+  
 
   render() {
     return html`
@@ -124,11 +130,9 @@ export class HaxSearch extends LitElement {
       </details>
       <div class="results">
         ${this.items.map((item) => {
-          // Extract necessary fields from JSON item
           const created = item.metadata ? new Date(parseInt(item.metadata.created) * 1000).toLocaleDateString() : '';
           const updated = item.metadata ? new Date(parseInt(item.metadata.updated) * 1000).toLocaleDateString() : '';
           const logo = item.metadata && item.metadata.files && item.metadata.files[0] ? item.metadata.files[0].url : '';
-          
 
           return html`
             <hax-item
@@ -163,7 +167,7 @@ export class HaxSearch extends LitElement {
 
   updateResults(value) {
     this.loading = true;
-    fetch('https://haxtheweb.org/site.json')
+    fetch(this.jsonUrl) // Use the jsonUrl property
       .then(response => response.ok ? response.json() : {})
       .then(data => {
         if (data && Array.isArray(data.items)) {
@@ -173,28 +177,20 @@ export class HaxSearch extends LitElement {
           );
         }
 
-        // Update global hex color after fetching the JSON data
         this.updateGlobalHexColor(data);
-
         this.loading = false;
       });
   }
 
   updateGlobalHexColor(data) {
     if (data.metadata && data.metadata.theme && data.metadata.theme.variables) {
-        const hexCode = data.metadata.theme.variables.hexCode;
-        console.log('Hex Code:', hexCode);
-
-        // Update the global CSS variable --global-hex-color
-        document.documentElement.style.setProperty('--global-hex-color', hexCode);
-        
+      const hexCode = data.metadata.theme.variables.hexCode;
+      console.log('Hex Code:', hexCode);
+      document.documentElement.style.setProperty('--global-hex-color', hexCode);
     } else {
-        console.log('Hex Code not found');
+      console.log('Hex Code not found');
     }
-}
-
-
-  
+  }
 
   static get tag() {
     return 'hax-search';
