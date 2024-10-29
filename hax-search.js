@@ -187,9 +187,6 @@ export class HaxSearch extends LitElement {
         // Update the global CSS variable --global-hex-color
         document.documentElement.style.setProperty('--global-hex-color', hexCode);
         
-        // Verify the update
-        const computedStyle = getComputedStyle(document.documentElement);
-        console.log('Updated global-hex-color:', computedStyle.getPropertyValue('--global-hex-color'));
     } else {
         console.log('Hex Code not found');
     }
