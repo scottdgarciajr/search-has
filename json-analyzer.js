@@ -125,7 +125,12 @@ class JsonAnalyzer extends LitElement {
           type="text"
           placeholder="${this.url} (Place URL Here To Override)"
           @input="${this._updateUrl}"
+          list="url-options"
         />
+        <datalist id="url-options">
+          <option value="https://btopro.com" />
+          <option value="https://haxtheweb.org" />
+        </datalist>
       </div>
       
       <hax-search .jsonUrl="${this.url}"></hax-search>

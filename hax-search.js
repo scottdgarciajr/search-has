@@ -10,7 +10,8 @@ export class HaxSearch extends LitElement {
     this.title = '';
     this.loading = false;
     this.items = [];
-    this.jsonUrl = 'https://haxtheweb.org/site.json'; // Default URL, can be overridden
+    this.cachedData = null; // Cache for fetched JSON data
+    this.jsonUrl = 'https://haxtheweb.org/site.json';
     this.jsonBaseUrl = this.extractBaseUrl(this.jsonUrl);
   }
   
@@ -24,8 +25,9 @@ export class HaxSearch extends LitElement {
       loading: { type: Boolean, reflect: true },
       items: { type: Array },
       value: { type: String },
-      jsonUrl: { type: String }, 
+      jsonUrl: { type: String },
       baseUrl: { type: String },
+      cachedData: { type: Array }
     };
   }
 
