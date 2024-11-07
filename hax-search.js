@@ -11,15 +11,22 @@ export class HaxSearch extends LitElement {
     this.loading = false;
     this.items = [];
     this.jsonUrl = 'https://haxtheweb.org/site.json'; // Default URL, can be overridden
+    this.jsonBaseUrl = this.extractBaseUrl(this.jsonUrl);
+    alert(this.baseURL);
   }
   
+  extractBaseUrl(url) {
+    return url.replace(/\/?[^\/]*\.json$/, '');
+  }
+
   static get properties() {
     return {
       title: { type: String },
       loading: { type: Boolean, reflect: true },
       items: { type: Array },
       value: { type: String },
-      jsonUrl: { type: String }, // New property for JSON URL
+      jsonUrl: { type: String }, 
+      baseUrl: { type: String },
     };
   }
 
@@ -85,7 +92,6 @@ export class HaxSearch extends LitElement {
       details {
         margin: 16px;
         padding: 16px;
-        background: url("https://media.tenor.com/qbO5vZpflc4AAAAi/orumcek-spider.gif") no-repeat center center;
         background-size: cover;
         background-attachment: fixed;
         border-radius: 8px;
@@ -127,25 +133,27 @@ export class HaxSearch extends LitElement {
             @input="${this.inputChanged}" 
           />
         </div>
-      </details>
-      <div class="results">
+        <div class="results">
         ${this.items.map((item) => {
           const created = item.metadata ? new Date(parseInt(item.metadata.created) * 1000).toLocaleDateString() : '';
           const updated = item.metadata ? new Date(parseInt(item.metadata.updated) * 1000).toLocaleDateString() : '';
           const logo = item.metadata && item.metadata.files && item.metadata.files[0] ? item.metadata.files[0].url : '';
 
           return html`
-            <hax-item
+            <hax-card
               created="${created}"
               lastUpdated="${updated}"
               title="${item.title}"
               description="${item.description}"
               logo="${logo}"
               slug="${item.slug}"
-            ></hax-item>
+              baseURL="${this.jsonBaseUrl}"
+            ></hax-card>
           `;
         })}
       </div>
+      </details>
+      
     `;
   }
 
@@ -154,7 +162,7 @@ export class HaxSearch extends LitElement {
   }
 
   updated(changedProperties) {
-    if (changedProperties.has('value') && this.value) {
+    if (changedProperties.has('value')) {
       this.updateResults(this.value);
     } else if (changedProperties.has('value') && !this.value) {
       this.items = [];
@@ -167,6 +175,7 @@ export class HaxSearch extends LitElement {
 
   updateResults(value) {
     this.loading = true;
+    this.jsonBaseUrl = this.extractBaseUrl(this.jsonUrl);
     fetch(this.jsonUrl) // Use the jsonUrl property
       .then(response => response.ok ? response.json() : {})
       .then(data => {

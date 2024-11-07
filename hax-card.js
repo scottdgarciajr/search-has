@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 
 
-export class HaxItem extends LitElement {
+export class HaxCard extends LitElement {
 
   constructor() {
     super();
@@ -11,7 +11,8 @@ export class HaxItem extends LitElement {
     this.created = '';
     this.lastUpdated = '';
     this.logo = '';
-    this.slug = 'https://haxtheweb.org';
+    this.slug = 'google.com';
+    this.baseURL = 'google.com';
   }
 
   static get properties() {
@@ -21,7 +22,8 @@ export class HaxItem extends LitElement {
       created: { type: String },
       lastUpdated: { type: String },
       logo: { type: String },
-      slug: { type: String }
+      slug: { type: String },
+      baseURL: { type: String }
     };
   }
 
@@ -135,7 +137,7 @@ export class HaxItem extends LitElement {
         @keyup="${this.onKeyup}"
       >
         <div class="image-container">
-          <img src="https://haxtheweb.org/${this.logo}" alt="${this.title}" />
+          <img src="${this.baseURL}/${this.logo}" alt="${this.title}" />
         </div>
         <div class="info">${this.title}</div>
         <div class="secondary">${this.description}</div>
@@ -161,7 +163,7 @@ export class HaxItem extends LitElement {
 
     setTimeout(() => {
       document.body.removeChild(gif);
-      window.open(('https://haxtheweb.org/'+this.slug), '_blank'); 
+      window.open((this.baseURL+'/'+this.slug), '_blank'); 
     }, 2000);
   }
 
@@ -172,8 +174,8 @@ export class HaxItem extends LitElement {
   }
 
   static get tag() {
-    return "hax-item";
+    return "hax-card";
   }
 }
 
-customElements.define(HaxItem.tag, HaxItem);
+customElements.define(HaxCard.tag, HaxCard);

@@ -80,7 +80,6 @@ class JsonAnalyzer extends LitElement {
       details {
         margin: 16px;
         padding: 16px;
-        background: url("https://media.tenor.com/qbO5vZpflc4AAAAi/orumcek-spider.gif") no-repeat center center;
         background-size: cover;
         background-attachment: fixed;
         border-radius: 8px;
@@ -115,7 +114,7 @@ class JsonAnalyzer extends LitElement {
 
   render() {
     if (this.url == ''){this.url = 'https://haxtheweb.org/site.json';}
-    else if (!this.url || !this.url.endsWith('site.json')) {this.url+='/site.json'}
+    else if (!this.url || !this.url.endsWith('/site.json')) {this.url+='/site.json'}
     
     return html`
       <div class="search-container">
@@ -124,7 +123,7 @@ class JsonAnalyzer extends LitElement {
         <input
           class="search-input"
           type="text"
-          placeholder="https://haxtheweb.org/site.json (Place URL Here To Override)"
+          placeholder="${this.url} (Place URL Here To Override)"
           @input="${this._updateUrl}"
         />
       </div>
