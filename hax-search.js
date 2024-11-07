@@ -12,7 +12,6 @@ export class HaxSearch extends LitElement {
     this.items = [];
     this.jsonUrl = 'https://haxtheweb.org/site.json'; // Default URL, can be overridden
     this.jsonBaseUrl = this.extractBaseUrl(this.jsonUrl);
-    alert(this.baseURL);
   }
   
   extractBaseUrl(url) {
