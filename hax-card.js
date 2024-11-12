@@ -46,6 +46,8 @@ export class HaxCard extends LitElement {
         outline: none;
         /* Height for golden ratio (approx. 1.618) */
         height: 512px;
+        padding: 8px; /* adds padding inside each card to create spacing on left and right */
+        box-sizing: border-box; /* ensures padding doesn't affect card width */
       }
   
       /* Hover and Focus Effects */

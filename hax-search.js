@@ -83,11 +83,11 @@ export class HaxSearch extends LitElement {
       }
 
       .results {
-        visibility: visible;
-        height: 100%;
-        opacity: 1;
-        transition-delay: 0.5s;
-        transition: 0.5s all ease-in-out;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+       gap: 16px; /* spacing between columns and rows */
+       max-width: 1200px; /* limit width to fit a maximum of 4 cards */
+       margin: 0 auto;
       }
 
       details {
