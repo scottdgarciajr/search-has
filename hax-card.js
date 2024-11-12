@@ -125,9 +125,12 @@ export class HaxCard extends LitElement {
   render() {
     const createdDate = new Date(parseInt(this.created) * 1000).toLocaleDateString();
     const updatedDate = new Date(parseInt(this.lastUpdated) * 1000).toLocaleDateString();
-    
+    let logoURL = '';
     if (this.logo == '') {
-      this.logo = "/files/HAX.psu%20World%20changer-circle1.png";//This changes the default image for empty strings
+      logoURL = "lib/no-image.jpg";//This changes the default image for empty strings
+  }
+  else {
+    logoURL=this.baseURL+'/'+this.logo
   }
   
 
@@ -139,7 +142,7 @@ export class HaxCard extends LitElement {
         @keyup="${this.onKeyup}"
       >
         <div class="image-container">
-          <img src="${this.baseURL}/${this.logo}" alt="${this.title}" />
+          <img src="${logoURL}" alt="${this.title}" />
         </div>
         <div class="info">${this.title}</div>
         <div class="secondary">${this.description}</div>

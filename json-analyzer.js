@@ -147,11 +147,15 @@ class JsonAnalyzer extends LitElement {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      /*const data = await response.json();
-      console.log(data);*/
+      try {
+        const data = await response.json();
+        console.log(data);
+      } catch (jsonError) {
+        console.error('Error parsing JSON:', jsonError);
+      }
     } catch (error) {
       console.error('Error fetching JSON:', error);
-      alert('Error fetching JSON\n', error);
+      alert('Error fetching JSON\n' + error);
     }
   }
 }

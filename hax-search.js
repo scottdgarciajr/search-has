@@ -13,6 +13,7 @@ export class HaxSearch extends LitElement {
     this.cachedData = null; // Cache for fetched JSON data
     this.jsonUrl = 'https://haxtheweb.org/site.json';
     this.jsonBaseUrl = this.extractBaseUrl(this.jsonUrl);
+    this.updateResults(this.value);
   }
   
   extractBaseUrl(url) {
@@ -114,8 +115,6 @@ export class HaxSearch extends LitElement {
     `;
   }
 
-  
-
   render() {
     return html`
       <h2>${this.title}</h2>
@@ -167,6 +166,11 @@ export class HaxSearch extends LitElement {
       this.updateResults(this.value);
     } else if (changedProperties.has('value') && !this.value) {
       this.items = [];
+    }
+
+    if (changedProperties.has('jsonUrl')) {
+      console.log('jsonUrl has changed to:', this.jsonUrl);
+      this.updateResults(this.value);  // Reload data when the URL changes
     }
 
     if (changedProperties.has('items') && this.items.length > 0) {
