@@ -37,83 +37,116 @@ export class HaxSearch extends LitElement {
       :host {
         display: block;
       }
-
+  
       .search-container {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: #fff;
-        border-radius: 24px;
-        border: 1px solid #dfe1e5;
-        padding: 5px 10px;
-        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+        align-items: center; /* Centered the contents vertically */
+        background-color: #fff; /* Default background color */
+        border-radius: 24px; /* Custom radius for the search container */
+        border: 1px solid #dfe1e5; /* Custom border */
+        padding: 5px 10px; /* Custom padding */
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28); /* Custom box shadow */
         width: 100%;
         max-width: 600px;
         margin: 20px auto;
         transition: box-shadow 0.3s ease;
       }
-
+  
       .search-container:hover {
-        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35);
+        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35); /* Custom hover shadow */
       }
-
+  
       .search-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 10px;
-        color: #9aa0a6;
-        font-size: 24px;
+        margin-right: 10px; /* Custom margin */
+        color: #9aa0a6; /* Custom icon color */
+        font-size: 24px; /* Custom font size */
         cursor: pointer;
       }
-
+  
       .search-input {
         flex: 1;
-        font-size: 16px;
-        line-height: 24px;
+        font-size: 16px; /* Default font size */
+        line-height: 24px; /* Default line height */
         border: none;
         outline: none;
       }
-
+  
       .search-input::placeholder {
-        color: #9aa0a6;
+        color: #9aa0a6; /* Custom placeholder color */
       }
-
+  
       .search-input:focus {
         outline: none;
       }
-
+  
+      button {
+        background-color: var(--color-primary); /* DDD default primary button color */
+        color: var(--color-white); /* DDD default white text color */
+        border: none;
+        border-radius: var(--radius-sm); /* DDD default small border-radius */
+        padding: var(--space-sm) var(--space-md); /* DDD default button padding */
+        font-size: var(--font-size-md); /* DDD default button font size */
+        cursor: pointer;
+        margin-right: var(--space-sm); /* DDD default margin */
+        transition: background-color 0.3s ease; /* DDD default transition */
+      }
+  
+      button[disabled] {
+        background-color: var(--color-disabled); /* DDD disabled button color */
+        cursor: not-allowed;
+      }
+  
+      button:not([disabled]):hover {
+        background-color: var(--color-primary-dark); /* DDD primary dark hover color */
+      }
+  
       .results {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-       gap: 16px; /* spacing between columns and rows */
-       max-width: 1200px; /* limit width to fit a maximum of 4 cards */
-       margin: 0 auto;
+        gap: var(--ddd-spacing-4); /* DDD default space for grid items */
+        max-width: 1200px;
+        margin: 0 auto;
       }
-
+  
       details {
-        margin: 16px;
-        padding: 16px;
+        margin: var(--space-md); /* DDD default margin */
+        padding: var(--space-md); /* DDD default padding */
         background-size: cover;
         background-attachment: fixed;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        border-radius: var(--radius-md); /* DDD default border-radius */
+        box-shadow: var(--shadow-sm); /* DDD default box-shadow */
       }
-
+  
       summary {
-        font-size: 24px;
-        padding: 8px;
-        color: white;
-        font-size: 42px;
+        font-size: var(--font-size-lg); /* DDD default summary font size */
+        padding: var(--space-md); /* DDD default padding */
+        color: var(--color-white); /* DDD default text color */
+        font-size: var(--font-size-xl); /* DDD large font size */
       }
-
+  
       input {
-        font-size: 20px;
-        line-height: 40px;
+        font-size: var(--font-size-lg); /* DDD default input font size */
+        line-height: var(--line-height-lg); /* DDD default line height */
         width: 100%;
+      }
+  
+      .error-message {
+        color: var(--color-error); /* DDD error color */
+        text-align: center;
+        margin-top: var(--space-sm); /* DDD default margin */
+      }
+  
+      .loading {
+        text-align: center;
+        margin-top: var(--space-sm); /* DDD default margin */
+        font-style: italic;
       }
     `;
   }
+  
 
   render() {
     return html`

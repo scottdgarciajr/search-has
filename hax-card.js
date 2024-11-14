@@ -36,24 +36,23 @@ export class HaxCard extends LitElement {
         align-items: center;
         width: 100%;
         max-width: 320px;
-        border-radius: 12px;
+        border-radius: var(--ddd-radius-xl); 
         overflow: hidden;
-        padding: 16px;
+        padding: var(--ddd-spacing-x-3); 
         background-color: #f9f9f9;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--ddd-boxShadow-md); 
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         cursor: pointer;
         outline: none;
         /* Height for golden ratio (approx. 1.618) */
         height: 512px;
-        padding: 8px; /* adds padding inside each card to create spacing on left and right */
-        box-sizing: border-box; /* ensures padding doesn't affect card width */
+        box-sizing: border-box;
       }
   
       /* Hover and Focus Effects */
       .card:hover, .card:focus {
         transform: translateY(-4px);
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        box-shadow: var(--ddd-boxShadow-lg); 
         background-color: var(--global-hex-color, #e1f5fe);
       }
   
@@ -62,19 +61,19 @@ export class HaxCard extends LitElement {
         width: 100%;
         aspect-ratio: 1.618; /* Golden ratio for a balanced aspect */
         overflow: hidden;
-        border-radius: 8px;
+        border-radius: var(--ddd-radius-rounded); 
         background-color: #ddd;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 16px;
+        margin-bottom: var(--ddd-spacing-x-4); /* Equivalent to 16px */
       }
   
       img {
         width: 100%;
         height: auto;
         object-fit: cover;
-        border-radius: 8px;
+        border-radius: var(--ddd-radius-rounded); /* Replaced with DDD border-radius class */
         transition: transform 0.3s ease;
       }
   
@@ -84,28 +83,34 @@ export class HaxCard extends LitElement {
   
       /* Typography and Text Styling */
       .info {
-        margin-top: 10px;
+        margin-top: var(--ddd-spacing-x-2); /* Equivalent to 10px */
         font-size: 20px;
-        font-weight: 600;
+        font-weight: var(--ddd-font-weight-medium); /* Replaced with DDD font-weight class */
         color: #333;
         text-align: center;
-        line-height: 1.5;
+        line-height: var(--ddd-lh-140); /* Replaced with DDD line-height class */
       }
   
       .secondary {
-        font-size: 16px;
-        color: #555;
-        margin-top: 6px;
-        line-height: 1.4;
-        text-align: center;
-      }
+  font-size: 16px;
+  color: #555;
+  margin-top: var(--ddd-spacing-x-1); /* Equivalent to 6px */
+  line-height: var(--ddd-lh-140); /* Replaced with DDD line-height class */
+  text-align: center;
+  overflow: hidden; /* Hides the overflowing text */
+  text-overflow: ellipsis; /* Adds ellipsis (...) for overflowing text */
+  display: -webkit-box; /* Allows multi-line truncation */
+  -webkit-line-clamp: 5; /* Limits to 5 lines, adjust the number for more lines */
+  -webkit-box-orient: vertical; /* Ensures vertical box behavior */
+}
+
   
       .metadata {
         font-size: 12px;
         color: #777;
-        margin-top: 8px;
+        margin-top: var(--ddd-spacing-x-2); /* Equivalent to 8px */
         font-style: italic;
-        line-height: 1.3;
+        line-height: var(--ddd-lh-120); /* Replaced with DDD line-height class */
         text-align: center;
       }
   
@@ -114,7 +119,7 @@ export class HaxCard extends LitElement {
         .card {
           width: 100%;
           max-width: 100%;
-          padding: 12px;
+          padding: var(--ddd-spacing-x-3); /* Equivalent to 12px */
           height: auto; /* Flexible height for smaller screens */
         }
       }
