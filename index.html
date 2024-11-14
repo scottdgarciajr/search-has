@@ -5,44 +5,83 @@
   <base href="/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="Description" content="Demonstration for hax-search">
+  <meta name="Description" content="Demonstration for json-analyzer">
 
   <style>
     :root {
+      --link-color: var(--ddd-theme-default-link);
+      --link-hover-color: var(--ddd-theme-default-link80);
+      --background-color: var(--ddd-theme-default-infoLight);
+      --primary-text-color: var(--ddd-theme-default-info);
+      --highlight-color: var(--ddd-theme-default-success);
+      --error-color: var(--ddd-theme-default-error);
+      --warning-color: var(--ddd-theme-default-warning);
+      --success-color: var(--ddd-theme-default-successLight);
+      --navbar-gradient: var(--ddd-theme-default-gradient-navBar);
+      --footer-gradient: var(--ddd-theme-default-gradient-footer);
       --global-hex-color: #fd0606; /* Global color variable */
     }
+
     html, body {
       margin: 0;
       padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--background-color);
+      color: var(--primary-text-color);
     }
+
+    .navbar {
+      background: var(--navbar-gradient);
+      padding: 10px;
+      text-align: center;
+      color: white;
+    }
+
     #demo {
-      margin: var(--ddd-spacing-2);
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
     }
-    hax-search {
-      margin: var(--ddd-spacing-2);
-      border: var(--ddd-border-md);
-      border-radius: var(--ddd-radius-lg);
+
+    h1, h2 {
+      font-weight: normal;
     }
-    hax-search:hover {
-      box-shadow: var(--ddd-boxShadow-sm);
+
+    h1 {
+      color: var(--link-color);
     }
-    #example {
-      --hax-search-font-size: var(--ddd-font-size-l);
-      background-color: var(--ddd-accent-2);
-      color: var(--ddd-primary-17);
+
+    h2 {
+      color: var(--link-hover-color);
+    }
+
+    /* Gradient Footer */
+    .footer {
+      background: var(--footer-gradient);
+      padding: 20px;
+      text-align: center;
     }
   </style>
-  <title>hax-search</title>
+  <title>JSON Analyzer Demo</title>
 </head>
 
 <body>
-  <div id="demo">
-    <h1>hax-json-search</h1>
-    <!-- this is going to do whatever the tag's defaults are -->
-    <h2>Type Your JSON Below!</h2>
-    <json-analyzer></json-analyzer>
-    
+  <div class="navbar">
+    <h1>JSON Analyzer Demo</h1>
   </div>
+  
+  <div id="demo">
+    <h2>Type Your JSON Below</h2>
+    <json-analyzer></json-analyzer>
+  </div>
+  
+  <footer class="footer">
+    <div>
+      <p>&copy; Scott Garcia Productions</p>
+    </div>
+  </footer>
+
   <script type="module" src="./json-analyzer.js"></script>
 </body>
 </html>

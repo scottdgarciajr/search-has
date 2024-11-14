@@ -37,123 +37,112 @@ export class HaxSearch extends LitElement {
       :host {
         display: block;
       }
-
+  
       .search-container {
         display: flex;
         align-items: center;
-        background-color: var(--ddd-theme-default-white, #fff); /* DDD white */
+        background-color: var(--ddd-theme-default-white, #fff);
         border-radius: 24px;
-        border: 1px solid var(--ddd-theme-default-slateGray, #dfe1e5); /* DDD gray for border */
+        border: 1px solid var(--ddd-theme-default-slateGray, #dfe1e5);
         padding: 5px 10px;
-        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28); /* Custom shadow */
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
         width: 100%;
         max-width: 600px;
         margin: 20px auto;
         transition: box-shadow 0.3s ease;
       }
-
+  
       .search-container:hover {
-        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35); /* Custom shadow on hover */
+        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35);
       }
-
+  
       .search-icon {
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 10px;
-        color: var(--ddd-theme-default-coalyGray, #9aa0a6); /* DDD icon color */
+        color: var(--ddd-theme-default-coalyGray, #9aa0a6);
         font-size: 24px;
         cursor: pointer;
       }
-
+  
       .search-input {
         flex: 1;
         font-size: 16px;
         line-height: 24px;
         border: none;
         outline: none;
-        background: transparent; /* Ensure no background color on input */
-        color: var(--ddd-theme-default-textColor, #000); /* DDD default text color */
+        background: transparent;
+        color: var(--ddd-theme-default-textColor, #000);
       }
-
-      .search-input::placeholder {
-        color: var(--ddd-theme-default-coalyGray, #9aa0a6); /* DDD placeholder color */
-      }
-
-      .search-input:focus {
-        outline: none;
-      }
-
-      button {
-        background-color: var(--ddd-theme-default-beaverBlue, #007bff); /* DDD button background */
-        color: var(--ddd-theme-default-white, #fff); /* DDD white text */
-        border: none;
-        border-radius: 5px;
-        padding: 10px 15px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-right: 10px;
-        transition: background-color 0.3s ease;
-      }
-
-      button[disabled] {
-        background-color: var(--ddd-theme-default-slateGray, #ccc); /* DDD disabled button */
-        cursor: not-allowed;
-      }
-
-      button:not([disabled]):hover {
-        background-color: var(--ddd-theme-default-navy70, #0056b3); /* DDD hover color */
-      }
-
+  
       .results {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: var(--ddd-spacing-4, 16px); /* DDD spacing */
+        gap: var(--ddd-spacing-4, 16px);
         max-width: 1200px;
         margin: 0 auto;
       }
-
-      details {
-        margin: 16px;
-        padding: 16px;
-        background-size: cover;
-        background-attachment: fixed;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  
+      /* Center the summary card and add hover style using global color */
+      .summary-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center the content */
+      width: 100%;
+      max-width: 320px;
+      border-radius: 8px;
+      padding: 16px;
+      background-color: #f3f4f6;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      margin: 20px auto; /* Center the card within the container */
+      padding: var(--ddd-spacing-x-3);
       }
-
-      summary {
-        font-size: var(--ddd-theme-default-skyLight, 24px); /* DDD font size */
-        padding: 8px;
+  
+      .summary-card:hover {
+        transform: translateY(-4px);
+        background-color: var(--global-hex-color, #e0f7fa); /* Use the global color on hover */
       }
-
-      input {
-        font-size: var(--ddd-theme-default-skyBlue, 20px); /* DDD input font */
-        line-height: 40px;
-        width: 100%;
-        background: transparent; /* Ensure no background color */
+  
+      .summary-card h3 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
       }
-
-      .error-message {
-        color: var(--ddd-theme-default-discoveryCoral, red); /* DDD error color */
-        text-align: center;
-        margin-top: 10px;
+  
+      .summary-card p {
+        margin: 8px 0;
+        font-size: 16px;
+        color: #555;
+        line-height: 1.5;
       }
-
-      .loading {
-        text-align: center;
-        margin-top: 10px;
-        font-style: italic;
+  
+      .summary-card strong {
+        color: #222;
       }
     `;
   }
+  
 
 
   
 
   render() {
+    // Deconstruct metadata, theme, and title, ensuring correct structure
+    const { description = 'N/A', metadata = {}, title = 'N/A' } = this.cachedData || {};
+    
+    // Adjust paths to `created` and `updated` based on nested structure
+    const created = metadata.site?.created ? 
+        new Date(parseInt(metadata.site.created) * 1000).toLocaleDateString() : 'N/A';
+    const updated = metadata.site?.updated ? 
+        new Date(parseInt(metadata.site.updated) * 1000).toLocaleDateString() : 'N/A';
+  
+    // Access the `theme` data from metadata, then variables if present
+    const themeName = metadata.theme?.name || 'N/A';
+  
     return html`
-      <h2>${this.title}</h2>
+      <h2>${title}</h2>
       <details open>
         <summary>Search the HaxWeb!</summary>
         <div class="search-container">
@@ -169,32 +158,48 @@ export class HaxSearch extends LitElement {
             @input="${this.inputChanged}" 
           />
         </div>
+        
+        <!-- Static Summary Card -->
+        <div class="summary-card">
+          <h3>Summary</h3>
+          <p><strong>Title:</strong> ${title}</p> <!-- Display the title from JSON -->
+          <p><strong>Description:</strong> ${description}</p>
+          <p><strong>Date Created:</strong> ${created}</p>
+          <p><strong>Last Updated:</strong> ${updated}</p>
+          <p><strong>Theme:</strong> ${themeName}</p>
+        </div>
+        
+        <!-- Search Results as Individual Cards -->
         <div class="results">
-        ${this.items.map((item) => {
-          const created = item.metadata ? new Date(parseInt(item.metadata.created) * 1000).toLocaleDateString() : '';
-          const updated = item.metadata ? new Date(parseInt(item.metadata.updated) * 1000).toLocaleDateString() : '';
-          const logo = item.metadata && item.metadata.files && item.metadata.files[0] ? item.metadata.files[0].url : '';
-
-          return html`
-            <hax-card
-              created="${created}"
-              lastUpdated="${updated}"
-              title="${item.title}"
-              description="${item.description}"
-              logo="${logo}"
-              slug="${item.slug}"
-              baseURL="${this.jsonBaseUrl}"
-            ></hax-card>
-          `;
-        })}
-      </div>
+          ${this.items.map((item) => {
+            const itemMetadata = item.metadata || {};
+            const itemCreated = itemMetadata.site?.created ? 
+                new Date(parseInt(itemMetadata.site.created) * 1000).toLocaleDateString() : 'N/A';
+            const itemUpdated = itemMetadata.site?.updated ? 
+                new Date(parseInt(itemMetadata.site.updated) * 1000).toLocaleDateString() : 'N/A';
+            const logo = itemMetadata.files && itemMetadata.files[0] ? itemMetadata.files[0].url : '';
+    
+            return html`
+              <hax-card
+                created="${itemCreated}"
+                lastUpdated="${itemUpdated}"
+                title="${item.title}"
+                description="${item.description || 'N/A'}"
+                logo="${logo}"
+                slug="${item.slug}"
+                baseURL="${this.jsonBaseUrl}"
+              ></hax-card>
+            `;
+          })}
+        </div>
       </details>
-      
     `;
-  }
+}
 
+  
+  
   inputChanged(e) {
-    this.value = this.shadowRoot.querySelector('#input').value;
+    this.value = e.target.value;
   }
 
   updated(changedProperties) {
@@ -205,22 +210,21 @@ export class HaxSearch extends LitElement {
     }
 
     if (changedProperties.has('jsonUrl')) {
-      console.log('jsonUrl has changed to:', this.jsonUrl);
-      this.updateResults(this.value);  // Reload data when the URL changes
-    }
-
-    if (changedProperties.has('items') && this.items.length > 0) {
-      console.log(this.items);
+      this.updateResults(this.value);
     }
   }
 
-  updateResults(value) {
+  async updateResults(value) {
     this.loading = true;
     this.jsonBaseUrl = this.extractBaseUrl(this.jsonUrl);
-    fetch(this.jsonUrl) // Use the jsonUrl property
-      .then(response => response.ok ? response.json() : {})
-      .then(data => {
-        if (data && Array.isArray(data.items)) {
+
+    try {
+      const response = await fetch(this.jsonUrl);
+      if (response.ok) {
+        const data = await response.json();
+        this.cachedData = data; // Cache the full data for `render`
+        
+        if (Array.isArray(data.items)) {
           this.items = data.items.filter(item => 
             item.title.toLowerCase().includes(value.toLowerCase()) ||
             item.description.toLowerCase().includes(value.toLowerCase())
@@ -228,14 +232,19 @@ export class HaxSearch extends LitElement {
         }
 
         this.updateGlobalHexColor(data);
-        this.loading = false;
-      });
+      } else {
+        console.error('Failed to fetch data');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      this.loading = false;
+    }
   }
 
   updateGlobalHexColor(data) {
     if (data.metadata && data.metadata.theme && data.metadata.theme.variables) {
       const hexCode = data.metadata.theme.variables.hexCode;
-      console.log('Hex Code:', hexCode);
       document.documentElement.style.setProperty('--global-hex-color', hexCode);
     } else {
       console.log('Hex Code not found');

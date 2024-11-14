@@ -164,7 +164,7 @@ class JsonAnalyzer extends LitElement {
           @input="${this._onInputChange}"
           list="url-options"
           .value="${this.currentUrl}" <!-- Bind currentUrl to the input -->
-        />
+        
         <datalist id="url-options">
           <option value="https://btopro.com" />
           <option value="https://haxtheweb.org" />
