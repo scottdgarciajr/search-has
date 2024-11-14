@@ -8,13 +8,13 @@ class JsonAnalyzer extends LitElement {
       :host {
         display: block;
       }
-
+  
       .search-container {
         display: flex;
-        align-items: center; /* Centered the contents vertically */
-        background-color: #fff;
+        align-items: center;
+        background-color: var(--ddd-theme-default-white);
         border-radius: 24px;
-        border: 1px solid #dfe1e5;
+        border: 1px solid var(--ddd-theme-default-limestoneGray);
         padding: 5px 10px;
         box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
         width: 100%;
@@ -22,58 +22,60 @@ class JsonAnalyzer extends LitElement {
         margin: 20px auto;
         transition: box-shadow 0.3s ease;
       }
-
+  
       .search-container:hover {
         box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35);
       }
-
+  
       .search-icon {
         display: flex;
         align-items: center;
         justify-content: center;
         margin-right: 10px;
-        color: #9aa0a6;
+        color: var(--ddd-theme-default-slateGray);
         font-size: 24px;
         cursor: pointer;
       }
-
+  
       .search-input {
         flex: 1;
         font-size: 16px;
         line-height: 24px;
         border: none;
         outline: none;
+        color: var(--ddd-theme-default-info);
+        background: transparent; /* Ensure no background color on input */
       }
-
+  
       .search-input::placeholder {
-        color: #9aa0a6;
+        color: var(--ddd-theme-default-slateGray);
       }
-
+  
       .search-input:focus {
         outline: none;
       }
-
+  
       button {
-        background-color: #007bff; /* Button background color */
-        color: white; /* Button text color */
-        border: none; /* No border */
-        border-radius: 5px; /* Rounded corners */
-        padding: 10px 15px; /* Padding for the button */
-        font-size: 16px; /* Font size for the button */
-        cursor: pointer; /* Pointer cursor on hover */
-        margin-right: 10px; /* Space between button and input */
-        transition: background-color 0.3s ease; /* Transition for background color */
+        background-color: var(--ddd-theme-default-beaverBlue);
+        color: var(--ddd-theme-default-white, white);
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
       }
-
+  
       button[disabled] {
-        background-color: #ccc;
+        background-color: var(--ddd-theme-default-slateLight, #ccc);
         cursor: not-allowed;
       }
-
+  
       button:not([disabled]):hover {
-        background-color: #0056b3; /* Darker blue on hover */
+        background-color: var(--ddd-theme-default-navy70, #0056b3);
       }
-
+  
       .results {
         visibility: visible;
         height: 100%;
@@ -81,7 +83,7 @@ class JsonAnalyzer extends LitElement {
         transition-delay: 0.5s;
         transition: 0.5s all ease-in-out;
       }
-
+  
       details {
         margin: 16px;
         padding: 16px;
@@ -90,26 +92,27 @@ class JsonAnalyzer extends LitElement {
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
-
+  
       summary {
         font-size: 24px;
         padding: 8px;
-        color: white;
+        color: var(--ddd-theme-default-white, white);
         font-size: 42px;
       }
-
+  
       input {
         font-size: 20px;
         line-height: 40px;
         width: 100%;
+        background: transparent; /* Ensure no background color */
       }
-
+  
       .error-message {
-        color: red;
+        color: var(--ddd-theme-default-roarGolden, red);
         text-align: center;
         margin-top: 10px;
       }
-
+  
       .loading {
         text-align: center;
         margin-top: 10px;
@@ -117,6 +120,9 @@ class JsonAnalyzer extends LitElement {
       }
     `;
   }
+
+  
+  
   
   static get properties() {
     return {

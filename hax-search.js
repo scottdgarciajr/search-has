@@ -37,115 +37,118 @@ export class HaxSearch extends LitElement {
       :host {
         display: block;
       }
-  
+
       .search-container {
         display: flex;
-        align-items: center; /* Centered the contents vertically */
-        background-color: #fff; /* Default background color */
-        border-radius: 24px; /* Custom radius for the search container */
-        border: 1px solid #dfe1e5; /* Custom border */
-        padding: 5px 10px; /* Custom padding */
-        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28); /* Custom box shadow */
+        align-items: center;
+        background-color: var(--ddd-theme-default-white, #fff); /* DDD white */
+        border-radius: 24px;
+        border: 1px solid var(--ddd-theme-default-slateGray, #dfe1e5); /* DDD gray for border */
+        padding: 5px 10px;
+        box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28); /* Custom shadow */
         width: 100%;
         max-width: 600px;
         margin: 20px auto;
         transition: box-shadow 0.3s ease;
       }
-  
+
       .search-container:hover {
-        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35); /* Custom hover shadow */
+        box-shadow: 0 1px 8px rgba(32, 33, 36, 0.35); /* Custom shadow on hover */
       }
-  
+
       .search-icon {
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 10px; /* Custom margin */
-        color: #9aa0a6; /* Custom icon color */
-        font-size: 24px; /* Custom font size */
+        margin-right: 10px;
+        color: var(--ddd-theme-default-coalyGray, #9aa0a6); /* DDD icon color */
+        font-size: 24px;
         cursor: pointer;
       }
-  
+
       .search-input {
         flex: 1;
-        font-size: 16px; /* Default font size */
-        line-height: 24px; /* Default line height */
+        font-size: 16px;
+        line-height: 24px;
         border: none;
         outline: none;
+        background: transparent; /* Ensure no background color on input */
+        color: var(--ddd-theme-default-textColor, #000); /* DDD default text color */
       }
-  
+
       .search-input::placeholder {
-        color: #9aa0a6; /* Custom placeholder color */
+        color: var(--ddd-theme-default-coalyGray, #9aa0a6); /* DDD placeholder color */
       }
-  
+
       .search-input:focus {
         outline: none;
       }
-  
+
       button {
-        background-color: var(--color-primary); /* DDD default primary button color */
-        color: var(--color-white); /* DDD default white text color */
+        background-color: var(--ddd-theme-default-beaverBlue, #007bff); /* DDD button background */
+        color: var(--ddd-theme-default-white, #fff); /* DDD white text */
         border: none;
-        border-radius: var(--radius-sm); /* DDD default small border-radius */
-        padding: var(--space-sm) var(--space-md); /* DDD default button padding */
-        font-size: var(--font-size-md); /* DDD default button font size */
+        border-radius: 5px;
+        padding: 10px 15px;
+        font-size: 16px;
         cursor: pointer;
-        margin-right: var(--space-sm); /* DDD default margin */
-        transition: background-color 0.3s ease; /* DDD default transition */
+        margin-right: 10px;
+        transition: background-color 0.3s ease;
       }
-  
+
       button[disabled] {
-        background-color: var(--color-disabled); /* DDD disabled button color */
+        background-color: var(--ddd-theme-default-slateGray, #ccc); /* DDD disabled button */
         cursor: not-allowed;
       }
-  
+
       button:not([disabled]):hover {
-        background-color: var(--color-primary-dark); /* DDD primary dark hover color */
+        background-color: var(--ddd-theme-default-navy70, #0056b3); /* DDD hover color */
       }
-  
+
       .results {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: var(--ddd-spacing-4); /* DDD default space for grid items */
+        gap: var(--ddd-spacing-4, 16px); /* DDD spacing */
         max-width: 1200px;
         margin: 0 auto;
       }
-  
+
       details {
-        margin: var(--space-md); /* DDD default margin */
-        padding: var(--space-md); /* DDD default padding */
+        margin: 16px;
+        padding: 16px;
         background-size: cover;
         background-attachment: fixed;
-        border-radius: var(--radius-md); /* DDD default border-radius */
-        box-shadow: var(--shadow-sm); /* DDD default box-shadow */
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       }
-  
+
       summary {
-        font-size: var(--font-size-lg); /* DDD default summary font size */
-        padding: var(--space-md); /* DDD default padding */
-        color: var(--color-white); /* DDD default text color */
-        font-size: var(--font-size-xl); /* DDD large font size */
+        font-size: var(--ddd-theme-default-skyLight, 24px); /* DDD font size */
+        padding: 8px;
       }
-  
+
       input {
-        font-size: var(--font-size-lg); /* DDD default input font size */
-        line-height: var(--line-height-lg); /* DDD default line height */
+        font-size: var(--ddd-theme-default-skyBlue, 20px); /* DDD input font */
+        line-height: 40px;
         width: 100%;
+        background: transparent; /* Ensure no background color */
       }
-  
+
       .error-message {
-        color: var(--color-error); /* DDD error color */
+        color: var(--ddd-theme-default-discoveryCoral, red); /* DDD error color */
         text-align: center;
-        margin-top: var(--space-sm); /* DDD default margin */
+        margin-top: 10px;
       }
-  
+
       .loading {
         text-align: center;
-        margin-top: var(--space-sm); /* DDD default margin */
+        margin-top: 10px;
         font-style: italic;
       }
     `;
   }
+
+
   
 
   render() {
