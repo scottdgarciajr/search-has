@@ -103,45 +103,51 @@ class JsonAnalyzer extends LitElement {
 
   static get properties() {
     return {
-      url: { type: String }
+      url: { type: String },
+      currentUrl: { type: String }, // Add currentUrl to hold the temporary input value
     };
   }
 
   constructor() {
     super();
     this.url = 'https://haxtheweb.org/site.json';
+    this.currentUrl = this.url; // Set initial input value
   }
 
   render() {
-    if (this.url == ''){this.url = 'https://haxtheweb.org/site.json';}
-    else if (!this.url || !this.url.endsWith('/site.json')) {this.url+='/site.json'}
-    
     return html`
       <div class="search-container">
-        
-        <div class="search-icon"><button @click="${this._analyze}">Analyze 🔍</button></div>
+        <div class="search-icon">
+          <button @click="${this._analyze}">Analyze 🔍</button>
+        </div>
         <input
           class="search-input"
           type="text"
           placeholder="${this.url} (Place URL Here To Override)"
-          @input="${this._updateUrl}"
+          @input="${this._updateCurrentUrl}"
           list="url-options"
+          value="${this.currentUrl}" <!-- Bind currentUrl to the input -->
         />
         <datalist id="url-options">
           <option value="https://btopro.com" />
           <option value="https://haxtheweb.org" />
         </datalist>
       </div>
-      
+
+      <!-- Pass only url to hax-search when the button is clicked -->
       <hax-search .jsonUrl="${this.url}"></hax-search>
     `;
   }
 
-  _updateUrl(event) {
-    this.url = event.target.value;
+  _updateCurrentUrl(event) {
+    this.currentUrl = event.target.value; // Update currentUrl on input change
   }
 
   async _analyze() {
+    if (!this.currentUrl.endsWith('/site.json')) {
+      this.currentUrl += '/site.json';
+    }
+    this.url = this.currentUrl; // Only update url here to trigger hax-search
     try {
       const response = await fetch(this.url);
       if (!response.ok) {
