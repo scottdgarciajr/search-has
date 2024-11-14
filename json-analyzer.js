@@ -65,7 +65,12 @@ class JsonAnalyzer extends LitElement {
         transition: background-color 0.3s ease; /* Transition for background color */
       }
 
-      button:hover {
+      button[disabled] {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+
+      button:not([disabled]):hover {
         background-color: #0056b3; /* Darker blue on hover */
       }
 
@@ -98,72 +103,153 @@ class JsonAnalyzer extends LitElement {
         line-height: 40px;
         width: 100%;
       }
+
+      .error-message {
+        color: red;
+        text-align: center;
+        margin-top: 10px;
+      }
+
+      .loading {
+        text-align: center;
+        margin-top: 10px;
+        font-style: italic;
+      }
     `;
   }
-
+  
   static get properties() {
     return {
       url: { type: String },
-      currentUrl: { type: String }, // Add currentUrl to hold the temporary input value
+      currentUrl: { type: String },
+      isValidJson: { type: Boolean },
+      isValidUrl: { type: Boolean },
+      errorMessage: { type: String },
+      isLoading: { type: Boolean },
     };
   }
 
   constructor() {
     super();
-    this.url = 'https://haxtheweb.org/site.json';
-    this.currentUrl = this.url; // Set initial input value
+    this.url = ''; // No default URL
+    this.currentUrl = ''; // Empty to require user input
+    this.isValidJson = false; // Only true if valid JSON is fetched
+    this.isValidUrl = false; // True if the input is a valid URL format
+    this.errorMessage = ''; // To display validation errors
+    this.isLoading = false; // To indicate loading state
   }
 
   render() {
     return html`
       <div class="search-container">
         <div class="search-icon">
-          <button @click="${this._analyze}">Analyze 🔍</button>
+          <button 
+            @click="${this._analyze}" 
+            ?disabled="${!this.isValidUrl || this.isLoading}"
+            title="${!this.isValidUrl ? 'Enter a valid URL to enable' : 'Analyze JSON'}"
+          >
+            ${this.isLoading ? 'Loading...' : 'Analyze 🔍'}
+          </button>
         </div>
         <input
           class="search-input"
           type="text"
-          placeholder="${this.url} (Place URL Here To Override)"
-          @input="${this._updateCurrentUrl}"
+          placeholder="Enter a base URL here"
+          @input="${this._onInputChange}"
           list="url-options"
-          value="${this.currentUrl}" <!-- Bind currentUrl to the input -->
+          .value="${this.currentUrl}" <!-- Bind currentUrl to the input -->
         />
         <datalist id="url-options">
           <option value="https://btopro.com" />
           <option value="https://haxtheweb.org" />
+          <option value="https://btopro.com/" />
+          <option value="https://haxtheweb.org/" />
         </datalist>
       </div>
 
-      <!-- Pass only url to hax-search when the button is clicked -->
-      <hax-search .jsonUrl="${this.url}"></hax-search>
+      ${this.errorMessage
+        ? html`<div class="error-message">${this.errorMessage}</div>`
+        : ''
+      }
+
+      ${this.isLoading
+        ? html`<div class="loading">Validating URL...</div>`
+        : ''
+      }
+
+      <!-- Pass only url to hax-search if valid JSON is found -->
+      ${this.isValidJson && !this.isLoading 
+        ? html`<hax-search .jsonUrl="${this.url}"></hax-search>` 
+        : ''
+      }
     `;
   }
 
-  _updateCurrentUrl(event) {
-    this.currentUrl = event.target.value; // Update currentUrl on input change
-  }
-
-  async _analyze() {
-    if (!this.currentUrl.endsWith('/site.json')) {
-      this.currentUrl += '/site.json';
+  /**
+   * Handles input changes, validates the URL, and updates the state accordingly.
+   * @param {Event} event - The input event.
+   */
+  _onInputChange(event) {
+    const inputValue = event.target.value.trim();
+    this.currentUrl = inputValue;
+    this.errorMessage = '';
+  
+    // Validate URL without resetting JSON validity
+    if (this._validateUrl(inputValue)) {
+      this.isValidUrl = true;
+    } else {
+      this.isValidUrl = false;
+      if (inputValue !== '') {
+        this.errorMessage = 'Please enter a valid URL.';
+      }
     }
-    this.url = this.currentUrl; // Only update url here to trigger hax-search
+  }
+  
+  async _analyze() {
+    if (!this.isValidUrl) {
+      this.errorMessage = 'Cannot analyze. The URL is invalid.';
+      return;
+    }
+  
+    // Construct the JSON URL
+    this.url = this.currentUrl.endsWith('/site.json')
+      ? this.currentUrl
+      : `${this.currentUrl.replace(/\/+$/, '')}/site.json`; // Remove trailing slashes before appending
+  
+    this.errorMessage = '';
+    this.isLoading = true;
+  
     try {
       const response = await fetch(this.url);
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      try {
-        const data = await response.json();
-        console.log(data);
-      } catch (jsonError) {
-        console.error('Error parsing JSON:', jsonError);
-      }
+      if (!response.ok) throw new Error(`Network response was not ok (Status: ${response.status})`);
+      
+      const data = await response.json();
+      console.log('Fetched JSON:', data);
+      this.isValidJson = true; // Set to true only if JSON is valid
     } catch (error) {
       console.error('Error fetching JSON:', error);
-      alert('Error fetching JSON\n' + error);
+      this.errorMessage = `Error fetching JSON: ${error.message}`;
+      // Only set isValidJson to false on an actual fetch error
+      this.isValidJson = false;
+    } finally {
+      this.isLoading = false;
     }
   }
+
+  /**
+   * Validates whether the input string is a properly formatted URL.
+   * @param {string} urlString - The URL string to validate.
+   * @returns {boolean} - True if valid, false otherwise.
+   */
+  _validateUrl(urlString) {
+    try {
+      new URL(urlString);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
 }
 
 customElements.define('json-analyzer', JsonAnalyzer);
