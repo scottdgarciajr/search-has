@@ -126,17 +126,33 @@ export class HaxSearch extends LitElement {
   
 
 
-  
-
   render() {
     // Deconstruct metadata, theme, and title, ensuring correct structure
     const { description = 'N/A', metadata = {}, title = 'N/A' } = this.cachedData || {};
-    
+  
+    // Helper function to safely parse and format the date
+    const formatDate = (timestamp) => {
+      if (timestamp) {
+        console.log("Original timestamp:", timestamp); // Log the raw timestamp
+        const timestampInt = Number(timestamp); // Convert to a number (integer)
+        if (isNaN(timestampInt)) {
+          console.warn("Invalid timestamp:", timestamp);
+          return 'Broken in Format'; // If it's not a valid number, return 'Broken'
+        }
+        const date = new Date(timestampInt * 1000); // Convert UNIX timestamp to milliseconds
+        return date.getTime() > 0 ? date.toLocaleDateString() : 'Broken in Format'; // Return formatted date or 'Broken' if invalid
+      }
+      return 'N/A: falsy timestamp'; // Return 'N/A' if timestamp is falsy
+    };
+  
     // Adjust paths to `created` and `updated` based on nested structure
-    const created = metadata.site?.created ? 
-        new Date(parseInt(metadata.site.created) * 1000).toLocaleDateString() : 'N/A';
-    const updated = metadata.site?.updated ? 
-        new Date(parseInt(metadata.site.updated) * 1000).toLocaleDateString() : 'N/A';
+    const created = metadata.site?.created ? formatDate(metadata.site.created) : 'Broken';
+    const updated = metadata.site?.updated ? formatDate(metadata.site.updated) : 'Broken';
+  
+    // Log metadata for debugging
+    console.log('Metadata structure:', metadata);
+    console.log('Created timestamp:', metadata.site?.created);
+    console.log('Updated timestamp:', metadata.site?.updated);
   
     // Access the `theme` data from metadata, then variables if present
     const themeName = metadata.theme?.name || 'N/A';
@@ -147,9 +163,7 @@ export class HaxSearch extends LitElement {
         <summary>Search the HaxWeb!</summary>
         <div class="search-container">
           <div class="search-icon">
-            <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px">
-              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-            </svg>
+            <!-- Search icon SVG -->
           </div>
           <input 
             id="input" 
@@ -162,7 +176,7 @@ export class HaxSearch extends LitElement {
         <!-- Static Summary Card -->
         <div class="summary-card">
           <h3>Summary</h3>
-          <p><strong>Title:</strong> ${title}</p> <!-- Display the title from JSON -->
+          <p><strong>Title:</strong> ${title}</p>
           <p><strong>Description:</strong> ${description}</p>
           <p><strong>Date Created:</strong> ${created}</p>
           <p><strong>Last Updated:</strong> ${updated}</p>
@@ -173,12 +187,15 @@ export class HaxSearch extends LitElement {
         <div class="results">
           ${this.items.map((item) => {
             const itemMetadata = item.metadata || {};
-            const itemCreated = itemMetadata.site?.created ? 
-                new Date(parseInt(itemMetadata.site.created) * 1000).toLocaleDateString() : 'N/A';
-            const itemUpdated = itemMetadata.site?.updated ? 
-                new Date(parseInt(itemMetadata.site.updated) * 1000).toLocaleDateString() : 'N/A';
+            // Log item metadata for debugging
+            console.log('Item metadata:', itemMetadata);
+  
+            // Check for created and updated directly in itemMetadata
+            const itemCreated = itemMetadata.created ? formatDate(itemMetadata.created) : 'Broken in results';
+            const itemUpdated = itemMetadata.updated ? formatDate(itemMetadata.updated) : 'Broken in results';
+            
             const logo = itemMetadata.files && itemMetadata.files[0] ? itemMetadata.files[0].url : '';
-    
+  
             return html`
               <hax-card
                 created="${itemCreated}"
@@ -194,7 +211,10 @@ export class HaxSearch extends LitElement {
         </div>
       </details>
     `;
-}
+  }
+  
+  
+  
 
   
   

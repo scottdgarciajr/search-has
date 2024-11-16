@@ -128,17 +128,20 @@ export class HaxCard extends LitElement {
   
 
   render() {
-    const createdDate = new Date(parseInt(this.created) * 1000).toLocaleDateString();
-    const updatedDate = new Date(parseInt(this.lastUpdated) * 1000).toLocaleDateString();
     let logoURL = '';
     if (this.logo == '') {
-      logoURL = "lib/no-image.jpg";//This changes the default image for empty strings
-  }
-  else {
-    logoURL=this.baseURL+'/'+this.logo
-  }
+      logoURL = "lib/no-image.jpg"; // Default image for empty strings
+    } else {
+      logoURL = this.baseURL + '/' + this.logo;
+    }
   
-
+    // Display dates as plain strings if they exist, otherwise show a fallback message
+    const formattedCreated = this.created || 'No Date Available';
+    const formattedUpdated = this.lastUpdated || 'No Date Available';
+  
+    console.log("Created: ", formattedCreated);  // For debugging
+    console.log("Updated: ", formattedUpdated);  // For debugging
+  
     return html`
       <div
         class="card"
@@ -151,11 +154,12 @@ export class HaxCard extends LitElement {
         </div>
         <div class="info">${this.title}</div>
         <div class="secondary">${this.description}</div>
-        <div class="metadata">Created: ${createdDate}</div>
-        <div class="metadata">Updated: ${updatedDate}</div>
+        <div class="metadata">Created: ${formattedCreated}</div>
+        <div class="metadata">Updated: ${formattedUpdated}</div>
       </div>
     `;
   }
+    
 
   openSlug() {
     const gif = document.createElement('img');
