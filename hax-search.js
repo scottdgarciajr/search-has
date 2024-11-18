@@ -129,14 +129,12 @@ export class HaxSearch extends LitElement {
   render() {
     // Deconstruct metadata, theme, and title, ensuring correct structure
     const { description = 'N/A', metadata = {}, title = 'N/A' } = this.cachedData || {};
-  
+    
     // Helper function to safely parse and format the date
     const formatDate = (timestamp) => {
       if (timestamp) {
-        console.log("Original timestamp:", timestamp); // Log the raw timestamp
         const timestampInt = Number(timestamp); // Convert to a number (integer)
         if (isNaN(timestampInt)) {
-          console.warn("Invalid timestamp:", timestamp);
           return 'Broken in Format'; // If it's not a valid number, return 'Broken'
         }
         const date = new Date(timestampInt * 1000); // Convert UNIX timestamp to milliseconds
@@ -144,19 +142,14 @@ export class HaxSearch extends LitElement {
       }
       return 'N/A: falsy timestamp'; // Return 'N/A' if timestamp is falsy
     };
-  
+    
     // Adjust paths to `created` and `updated` based on nested structure
     const created = metadata.site?.created ? formatDate(metadata.site.created) : 'Broken';
     const updated = metadata.site?.updated ? formatDate(metadata.site.updated) : 'Broken';
-  
-    // Log metadata for debugging
-    console.log('Metadata structure:', metadata);
-    console.log('Created timestamp:', metadata.site?.created);
-    console.log('Updated timestamp:', metadata.site?.updated);
-  
+    
     // Access the `theme` data from metadata, then variables if present
     const themeName = metadata.theme?.name || 'N/A';
-  
+    
     return html`
       <h2>${title}</h2>
       <details open>
@@ -187,15 +180,11 @@ export class HaxSearch extends LitElement {
         <div class="results">
           ${this.items.map((item) => {
             const itemMetadata = item.metadata || {};
-            // Log item metadata for debugging
-            console.log('Item metadata:', itemMetadata);
-  
-            // Check for created and updated directly in itemMetadata
             const itemCreated = itemMetadata.created ? formatDate(itemMetadata.created) : 'Broken in results';
             const itemUpdated = itemMetadata.updated ? formatDate(itemMetadata.updated) : 'Broken in results';
             
             const logo = itemMetadata.files && itemMetadata.files[0] ? itemMetadata.files[0].url : '';
-  
+    
             return html`
               <hax-card
                 created="${itemCreated}"
@@ -212,6 +201,7 @@ export class HaxSearch extends LitElement {
       </details>
     `;
   }
+  
   
   
   

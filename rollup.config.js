@@ -20,6 +20,11 @@ export default {
     html({
       minify: true,
     }),
+    copy({/**added to make images work in deployment */
+      targets: [
+        { src: 'lib/', dest: 'public' }
+      ]
+    }),
     /** Resolve bare module imports */
     nodeResolve(),
     /** Minify JS, compile JS to a lower language target */
