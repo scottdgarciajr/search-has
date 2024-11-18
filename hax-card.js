@@ -129,11 +129,12 @@ export class HaxCard extends LitElement {
 
   render() {
     let logoURL = '';
-    if (this.logo == '') {
-      logoURL = "lib/no-image.jpg"; // Default image for empty strings
-    } else {
-      logoURL = this.baseURL + '/' + this.logo;
-    }
+  if (this.logo === '') {
+    //logoURL = "lib/no-image.jpg"; // Default image for empty strings
+    logoURL = "https://github.com/scottdgarciajr/search-hax/blob/main/lib/no-image.jpg?raw=true"; // Updated to GitHub URL
+  } else {
+    logoURL = this.baseURL + '/' + this.logo;
+  }
   
     // Display dates as plain strings if they exist, otherwise show a fallback message
     const formattedCreated = this.created || 'No Date Available';
